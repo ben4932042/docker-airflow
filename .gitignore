@@ -1,0 +1,5 @@
+dags/*
+plugins/*
+venv/
+__pycache__
+.DS_Store

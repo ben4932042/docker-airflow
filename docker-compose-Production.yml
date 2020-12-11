@@ -1,0 +1,92 @@
+version: '2.1'
+services:
+    redis:
+        image: 'redis:3.2.7'
+        # command: redis-server --requirepass redispass
+
+    mysql:
+        image: mysql:5.7
+        command: ["mysqld", "--character-set-server=utf8", "--collation-server=utf8_unicode_ci", "--explicit_defaults_for_timestamp"]
+        environment:
+            - MYSQL_ROOT_PASSWORD=password
+            - MYSQL_USER=airflow
+            - MYSQL_PASSWORD=airflow
+            - MYSQL_DATABASE=airflow
+        ports:
+            - "3306:3306"
+
+    webserver:
+        image: kysnm/docker-airflow:1.10.2
+        restart: always
+        depends_on:
+            - mysql
+            - redis
+        environment:
+            - LOAD_EX=n
+            - FERNET_KEY=46BKJoQYlPPOexq0OhDZnIlNepKFf87WFwLbfzqDDho=
+            - EXECUTOR=Celery
+            # - MYSQL_USER=airflow
+            # - MYSQL_PASSWORD=airflow
+            # - MYSQL_DB=airflow
+            # - REDIS_PASSWORD=redispass
+        volumes:
+            - ./dags:/usr/local/airflow/dags
+            # Uncomment to include custom plugins
+            # - ./plugins:/usr/local/airflow/plugins
+        ports:
+            - "8080:8080"
+        command: webserver
+        healthcheck:
+            test: ["CMD-SHELL", "[ -f /usr/local/airflow/airflow-webserver.pid ]"]
+            interval: 30s
+            timeout: 30s
+            retries: 3
+
+    flower:
+        image: kysnm/docker-airflow:1.10.2
+        restart: always
+        depends_on:
+            - redis
+        environment:
+            - EXECUTOR=Celery
+            # - REDIS_PASSWORD=redispass
+        ports:
+            - "5555:5555"
+        command: flower
+
+    scheduler:
+        image: kysnm/docker-airflow:1.10.2
+        restart: always
+        depends_on:
+            - webserver
+        volumes:
+            - ./dags:/usr/local/airflow/dags
+            # Uncomment to include custom plugins
+            # - ./plugins:/usr/local/airflow/plugins
+        environment:
+            - LOAD_EX=n
+            - FERNET_KEY=46BKJoQYlPPOexq0OhDZnIlNepKFf87WFwLbfzqDDho=
+            - EXECUTOR=Celery
+            # - MYSQL_USER=airflow
+            # - MYSQL_PASSWORD=airflow
+            # - MYSQL_DB=airflow
+            # - REDIS_PASSWORD=redispass
+        command: scheduler
+
+    worker:
+        image: kysnm/docker-airflow:1.10.2
+        restart: always
+        depends_on:
+            - scheduler
+        volumes:
+            - ./dags:/usr/local/airflow/dags
+            # Uncomment to include custom plugins
+            # - ./plugins:/usr/local/airflow/plugins
+        environment:
+            - FERNET_KEY=46BKJoQYlPPOexq0OhDZnIlNepKFf87WFwLbfzqDDho=
+            - EXECUTOR=Celery
+            # - MYSQL_USER=airflow
+            # - MYSQL_PASSWORD=airflow
+            # - MYSQL_DB=airflow
+            # - REDIS_PASSWORD=redispass
+        command: worker
