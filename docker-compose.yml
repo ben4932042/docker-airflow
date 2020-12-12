@@ -26,9 +26,9 @@ services:
             - FERNET_KEY=46BKJoQYlPPOexq0OhDZnIlNepKFf87WFwLbfzqDDho=
             - EXECUTOR=Celery
             - AIRFLOW__CORE__DEFAULT_TIMEZONE=Asia/Taipei
-            # - POSTGRES_USER=airflow
-            # - POSTGRES_PASSWORD=airflow
-            # - POSTGRES_DB=airflow
+             - POSTGRES_USER=airflow
+             - POSTGRES_PASSWORD=airflow
+             - POSTGRES_DB=airflow
             # - REDIS_PASSWORD=redispass
         volumes:
             - ./dags:/usr/local/airflow/dags
@@ -70,9 +70,9 @@ services:
             - FERNET_KEY=46BKJoQYlPPOexq0OhDZnIlNepKFf87WFwLbfzqDDho=
             - EXECUTOR=Celery
             - AIRFLOW__CORE__DEFAULT_TIMEZONE=Asia/Taipei
-            # - POSTGRES_USER=airflow
-            # - POSTGRES_PASSWORD=airflow
-            # - POSTGRES_DB=airflow
+             - POSTGRES_USER=airflow
+             - POSTGRES_PASSWORD=airflow
+             - POSTGRES_DB=airflow
             # - REDIS_PASSWORD=redispass
         command: scheduler
 
@@ -89,8 +89,8 @@ services:
             - FERNET_KEY=46BKJoQYlPPOexq0OhDZnIlNepKFf87WFwLbfzqDDho=
             - EXECUTOR=Celery
             - AIRFLOW__CORE__DEFAULT_TIMEZONE=Asia/Taipei
-            # - POSTGRES_USER=airflow
-            # - POSTGRES_PASSWORD=airflow
-            # - POSTGRES_DB=airflow
+             - POSTGRES_USER=airflow
+             - POSTGRES_PASSWORD=airflow
+             - POSTGRES_DB=airflow
             # - REDIS_PASSWORD=redispass
         command: worker

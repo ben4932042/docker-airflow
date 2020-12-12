@@ -25,10 +25,10 @@ services:
             - LOAD_EX=n
             - FERNET_KEY=46BKJoQYlPPOexq0OhDZnIlNepKFf87WFwLbfzqDDho=
             - EXECUTOR=Celery
-            # - MYSQL_USER=airflow
-            # - MYSQL_PASSWORD=airflow
-            # - MYSQL_DB=airflow
-            # - REDIS_PASSWORD=redispass
+             - MYSQL_USER=airflow
+             - MYSQL_PASSWORD=airflow
+             - MYSQL_DB=airflow
+               # - REDIS_PASSWORD=redispass
         volumes:
             - ./dags:/usr/local/airflow/dags
             # Uncomment to include custom plugins
@@ -67,9 +67,9 @@ services:
             - LOAD_EX=n
             - FERNET_KEY=46BKJoQYlPPOexq0OhDZnIlNepKFf87WFwLbfzqDDho=
             - EXECUTOR=Celery
-            # - MYSQL_USER=airflow
-            # - MYSQL_PASSWORD=airflow
-            # - MYSQL_DB=airflow
+             - MYSQL_USER=airflow
+             - MYSQL_PASSWORD=airflow
+             - MYSQL_DB=airflow
             # - REDIS_PASSWORD=redispass
         command: scheduler
 
@@ -85,8 +85,8 @@ services:
         environment:
             - FERNET_KEY=46BKJoQYlPPOexq0OhDZnIlNepKFf87WFwLbfzqDDho=
             - EXECUTOR=Celery
-            # - MYSQL_USER=airflow
-            # - MYSQL_PASSWORD=airflow
-            # - MYSQL_DB=airflow
+             - MYSQL_USER=airflow
+             - MYSQL_PASSWORD=airflow
+             - MYSQL_DB=airflow
             # - REDIS_PASSWORD=redispass
         command: worker
