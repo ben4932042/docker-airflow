@@ -16,7 +16,8 @@ services:
             - "3306:3306"
 
     webserver:
-        build: . 
+        build: .
+        container_name: airflow_local
         depends_on:
             - mysql
         environment:
