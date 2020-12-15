@@ -1,4 +1,3 @@
-dags/*
 plugins/*
 venv/
 __pycache__
