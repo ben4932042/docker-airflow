@@ -10,26 +10,26 @@ services:
         env_file:
             - .env
         environment:
-          MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
-          MYSQL_USER: ${MYSQL_USER}
-          MYSQL_PASSWORD: ${MYSQL_PASSWORD}
-          MYSQL_DATABASE: ${MYSQL_DATABASE}
+            MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+            MYSQL_USER: ${MYSQL_USER}
+            MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+            MYSQL_DATABASE: ${MYSQL_DATABASE}
         ports:
             - "3306:3306"
     mongo:
       image: mongo:4.4.2
-        container_name: mongodb
-        hostname: mongodb
-        restart: always
-        env_file:
+      container_name: mongodb
+      hostname: mongodb
+      restart: always
+      env_file:
             - .env
-        environment:
-            MONGO_INITDB_ROOT_USERNAME: ${MONGO_INITDB_ROOT_USERNAME}
-            MONGO_INITDB_ROOT_PASSWORD: ${MONGO_INITDB_ROOT_PASSWORD}
-            MONGO_INITDB_DATABASE: ${MONGO_INITDB_DATABASE}
-        expose:
+      environment:
+          MONGO_INITDB_ROOT_USERNAME: ${MONGO_INITDB_ROOT_USERNAME}
+          MONGO_INITDB_ROOT_PASSWORD: ${MONGO_INITDB_ROOT_PASSWORD}
+          MONGO_INITDB_DATABASE: ${MONGO_INITDB_DATABASE}
+      expose:
             - 6016
-        ports:
+      ports:
             - "27017:27017"
 
     webserver:
@@ -37,9 +37,18 @@ services:
         container_name: airflow_local
         depends_on:
             - mysql
+        env_file:
+            - .env
         environment:
-            - LOAD_EX=n
-            - EXECUTOR=Local
+          LOAD_EX: n
+          EXECUTOR: Local
+          MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+          MYSQL_USER: ${MYSQL_USER}
+          MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+          MYSQL_DATABASE: ${MYSQL_DATABASE}
+          MONGO_INITDB_ROOT_USERNAME: ${MONGO_INITDB_ROOT_USERNAME}
+          MONGO_INITDB_ROOT_PASSWORD: ${MONGO_INITDB_ROOT_PASSWORD}
+          MONGO_INITDB_DATABASE: ${MONGO_INITDB_DATABASE}          
         volumes:
             - ./dags:/usr/local/airflow/dags
             - ./plugins:/usr/local/airflow/plugins
