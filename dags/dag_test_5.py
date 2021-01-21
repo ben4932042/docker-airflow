@@ -16,7 +16,7 @@ default_args = {
     'email': ['airflow@example.com'],
     'email_on_failure': False,
     'email_on_retry': False,
-    'retries': 1,
+    'retries': 0,
     'retry_delay': timedelta(minutes=5),
     # 'end_date': datetime(2020, 2, 29),
     # 'execution_timeout': timedelta(seconds=300),
@@ -30,7 +30,7 @@ dag = DAG(
     dag_id='my_dag',
     description='my dag',
     default_args=default_args,
-    schedule_interval='*/1 * * * *'
+    schedule_interval='30 */5 * * *'
 )
 
 
@@ -48,12 +48,12 @@ branching = BranchPythonOperator(
     dag=dag,
 )
 
-
+import time
 def set_last_timestamp_in_redis(**context):
-    timestamp = context['task_instance'].xcom_pull(task_ids='get_timestamp')
-    redis = RedisHook(redis_conn_id='redis_default').get_conn()
-    redis.set('last_timestamp', timestamp)
-
+    #timestamp = context['task_instance'].xcom_pull(task_ids='get_timestamp')
+    #redis = RedisHook(redis_conn_id='redis_default').get_conn()
+    #redis.set('last_timestamp', timestamp)
+    time.sleep(10)
 
 store_in_redis = PythonOperator(
     task_id='store_in_redis',
